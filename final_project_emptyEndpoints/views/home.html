@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 15px;
+            padding: 20px;
+            max-width: 300px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: #555;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .card .price {
+            color: #27ae60;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .card button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .card button:hover {
+            background-color: #2ecc71;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; margin-top: 20px;">Our Products</h1>
+
+    <div class="container" id="productContainer">
+        <!-- Products will be dynamically inserted here -->
+    </div>
+
+    <script>
+        // Fetch products from the server
+        async function fetchProducts() {
+            try {
+                const response = await fetch('http://localhost:3003/products');
+                const products = await response.json();
+
+                // Get the container element where we will display the products
+                const productContainer = document.getElementById('productContainer');
+
+                // Loop through the products and create HTML for each
+                products.forEach(product => {
+                    const productCard = `
+                        <div class="card">
+                            <h2>${product.nameOfProduct}</h2>
+                            <p class="price">$${product.price}</p>
+                            <p>${product.description}</p>
+                            <button>Buy Now</button>
+                        </div>
+                    `;
+                    // Append the product card to the container
+                    productContainer.innerHTML += productCard;
+                });
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        }
+
+        // Call the function to fetch and display products when the page loads
+        fetchProducts();
+    </script>
+</body>
+</html>
