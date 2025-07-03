@@ -1,9 +1,9 @@
 const User = require("../models/User");
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 // secret key for jwt
-const SECRET_KEY = '0c5f477d11ad6c89c3cbf9782970dda2';
+const SECRET_KEY = "0c5f477d11ad6c89c3cbf9782970dda2";
 
 const getAllUsers = async (req, res) => {
   try {
@@ -76,7 +76,6 @@ const deleteUser = async (req, res) => {
   }
 };
 
-
 const signup = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -103,24 +102,26 @@ const signup = async (req, res) => {
     await newUser.save();
 
     const token = jwt.sign(
-      { id: newUser._id, username: newUser.username }, // Fixed variable name
+      { id: newUser._id, email: newUser.email },
       SECRET_KEY,
       { expiresIn: "1h" }
     );
 
-    return res.status(201).json({ token });
+    return res.status(201).json({ user: newUser, token });
+
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({ message: "Server error during signup" });
   }
 };
 
-
 const signin = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
     }
 
     const user = await User.findOne({ email });
@@ -134,7 +135,11 @@ const signin = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
-    const token = jwt.sign({ id: user._id, username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign(
+      { id: user._id, username: user.username },
+      SECRET_KEY,
+      { expiresIn: "1h" }
+    );
 
     res.status(200).json({
       message: "Signin successful",
@@ -142,16 +147,14 @@ const signin = async (req, res) => {
       user: {
         id: user._id,
         username: user.username,
-        email: user.email
-      }
-      
+        email: user.email,
+      },
     });
   } catch (error) {
     console.error("Signin error:", error);
     res.status(500).json({ message: "Server error during signin" });
   }
 };
-
 
 module.exports = {
   getAllUsers,
