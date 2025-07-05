@@ -116,7 +116,7 @@ const signup = async (req, res) => {
 };
 
 const signin = async (req, res) => {
-  try {
+   try {
     const { email, password } = req.body;
     if (!email || !password) {
       return res
@@ -136,23 +136,15 @@ const signin = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
     const token = jwt.sign(
-      { id: user._id, username: user.username },
+      { id: user._id, email: user.email },
       SECRET_KEY,
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({
-      message: "Signin successful",
-      token,
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-      },
-    });
+    return res.status(200).json({token});
   } catch (error) {
     console.error("Signin error:", error);
-    res.status(500).json({ message: "Server error during signin" });
+    return res.status(500).json({ message: "Server error during signin" });
   }
 };
 
