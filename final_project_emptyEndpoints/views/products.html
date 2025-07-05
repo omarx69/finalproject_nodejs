@@ -131,7 +131,6 @@
                 alert('Failed to add product');
             }
         }
-
         async function deleteProduct(productId) {
             if (confirm('Are you sure you want to delete this product?')) {
                 const response = await fetch(`${API_URL}/product/${productId}`, {
