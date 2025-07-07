@@ -18,9 +18,6 @@ app.use(cors());
 //connection with database	
 connectDB()
 
-//test for lazygit bla
-
-
 //user Routes
 app.get("/users", getAllUsers);
 
