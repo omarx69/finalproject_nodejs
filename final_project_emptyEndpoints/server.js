@@ -7,6 +7,7 @@ const {getAllProducts, addProduct, deleteProduct}=require('./controllers/itemCon
 
 const {getAllUsers, deleteUser, signup, signin}=require('./controllers/userController');
 
+const authenticate = require('./middleware/authenticate');
 
 
 const app = express()
@@ -23,7 +24,7 @@ app.get("/users", getAllUsers);
 
 app.delete("/user/:userId", deleteUser);
 
-app.post("/signup", signup);
+app.post("/signup", authenticate, signup);
 
 app.post("/signin/", signin);
 
