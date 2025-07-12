@@ -26,7 +26,7 @@ app.delete("/user/:userId", isAdmin,deleteUser);
 
 app.post("/signup", authenticate, signup);
 
-app.post("/signin/", signin);
+app.post("/signin/", authenticate,signin);
 
 // ======= products ENDPOINTS =====
 
