@@ -7,7 +7,7 @@ const {getAllProducts, addProduct, deleteProduct}=require('./controllers/itemCon
 
 const {getAllUsers, deleteUser, signup, signin}=require('./controllers/userController');
 
-const authenticate = require('./middleware/authenticate');
+const authenticate = require('./middlewares/authenticate');
 const isAdmin = require('./middlewares/isAdmin');
 
 const app = express()
