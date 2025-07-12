@@ -8,7 +8,7 @@ const {getAllProducts, addProduct, deleteProduct}=require('./controllers/itemCon
 const {getAllUsers, deleteUser, signup, signin}=require('./controllers/userController');
 
 const authenticate = require('./middleware/authenticate');
-
+const isAdmin = require('./middlewares/isAdmin');
 
 const app = express()
 
@@ -22,7 +22,7 @@ connectDB()
 //user Routes
 app.get("/users", getAllUsers);
 
-app.delete("/user/:userId", deleteUser);
+app.delete("/user/:userId", isAdmin,deleteUser);
 
 app.post("/signup", authenticate, signup);
 
@@ -31,14 +31,14 @@ app.post("/signin/", signin);
 // ======= products ENDPOINTS =====
 
 //add new product
-app.post("/product", addProduct);
+app.post("/product", isAdmin, addProduct);
 
 //get all products
 app.get("/products", getAllProducts);
 
 
 //delete a product 
-app.delete("/product/:productId", deleteProduct);
+app.delete("/product/:productId", isAdmin, deleteProduct);
 
 
 app.listen(3003, () => {
