@@ -20,25 +20,25 @@ app.use(cors());
 connectDB()
 
 //user Routes
-app.get("/users", getAllUsers);
+app.get("/users", authenticate, isAdmin, getAllUsers);
 
-app.delete("/user/:userId", isAdmin,deleteUser);
+app.delete("/user/:userId", authenticate, isAdmin, deleteUser);
 
-app.post("/signup", authenticate, signup);
+app.post("/signup", signup);
 
-app.post("/signin/", authenticate,signin);
+app.post("/signin/", signin);
 
 // ======= products ENDPOINTS =====
 
 //add new product
-app.post("/product", isAdmin, addProduct);
+app.post("/product", authenticate,isAdmin, addProduct);
 
 //get all products
 app.get("/products", getAllProducts);
 
 
 //delete a product 
-app.delete("/product/:productId", isAdmin, deleteProduct);
+app.delete("/product/:productId", authenticate,isAdmin, deleteProduct);
 
 
 app.listen(3003, () => {
